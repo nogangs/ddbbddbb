@@ -1,46 +1,15 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>TM 전화걸기</title>
-  <style>
-    body { font-family: sans-serif; padding: 2rem; }
-    ul { list-style: none; padding: 0; }
-    li {
-      margin: 0.6rem 0;
-      padding: 0.8rem 1rem;
-      background: #f0f0f0;
-      border-radius: 8px;
-    }
-    a {
-      font-size: 1.4rem;
-      color: #007bff;
-      text-decoration: none;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>사랑과평화</title>
 </head>
 <body>
-  <h1>📞 전화 걸기</h1>
-  <ul id="phoneList">불러오는 중...</ul>
-
-  <script>
-    const sheetURL = "https://docs.google.com/spreadsheets/d/1Ozp7mUqwGTiNUdz5Et4BWA2MP_2Z-C4WgxIlZqXdjFs/export?format=csv";
-
-    async function loadPhones() {
-      const res = await fetch(sheetURL);
-      const csv = await res.text();
-      const rows = csv.trim().split("\n").slice(1); // 헤더 제거
-
-      const list = rows.map(row => {
-        const [, phone] = row.split(",");
-        const cleanPhone = phone.trim().replace(/-/g, "");
-        return `<li><a href="tel:${cleanPhone}">${phone.trim()}</a></li>`;
-      }).join("");
-
-      document.getElementById("phoneList").innerHTML = list;
-    }
-
-    loadPhones();
-  </script>
+  <h1>사랑과평화 TM</h1>
+  <ul>
+    <li><a href="tel:01012345678">📞 010-1234-5678</a></li>
+    <li><a href="tel:01098765432">📞 010-9876-5432</a></li>
+  </ul>
 </body>
 </html>

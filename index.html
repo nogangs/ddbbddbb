@@ -2,32 +2,45 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>전화번호 바로 걸기</title>
+  <title>TM 전화걸기</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; }
-    h1 { color: #333; }
+    body { font-family: sans-serif; padding: 2rem; }
     ul { list-style: none; padding: 0; }
-    li { margin: 10px 0; }
-    a {
-      display: block;
-      padding: 15px;
-      background: #4CAF50;
-      color: white;
-      text-decoration: none;
+    li {
+      margin: 0.6rem 0;
+      padding: 0.8rem 1rem;
+      background: #f0f0f0;
       border-radius: 8px;
-      font-size: 18px;
     }
-    a:hover {
-      background: #45a049;
+    a {
+      font-size: 1.4rem;
+      color: #007bff;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
-  <h1>전화 걸기 리스트</h1>
-  <ul>
-    <li><a href="tel:01012345678">매장 A: 010-1234-5678</a></li>
-    <li><a href="tel:01087654321">매장 B: 010-8765-4321</a></li>
-    <!-- 여기 계속 추가 가능 -->
-  </ul>
+  <h1>📞 전화 걸기</h1>
+  <ul id="phoneList">불러오는 중...</ul>
+
+  <script>
+    const sheetURL = "https://docs.google.com/spreadsheets/d/1Ozp7mUqwGTiNUdz5Et4BWA2MP_2Z-C4WgxIlZqXdjFs/export?format=csv";
+
+    async function loadPhones() {
+      const res = await fetch(sheetURL);
+      const csv = await res.text();
+      const rows = csv.trim().split("\n").slice(1); // 헤더 제거
+
+      const list = rows.map(row => {
+        const [, phone] = row.split(",");
+        const cleanPhone = phone.trim().replace(/-/g, "");
+        return `<li><a href="tel:${cleanPhone}">${phone.trim()}</a></li>`;
+      }).join("");
+
+      document.getElementById("phoneList").innerHTML = list;
+    }
+
+    loadPhones();
+  </script>
 </body>
 </html>

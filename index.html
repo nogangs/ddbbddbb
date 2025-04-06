@@ -33,12 +33,14 @@
           list.innerHTML = "";
 
           rows.forEach(row => {
-            const name = row.c[2]?.v || "이름없음";
-            const phone = row.c[4]?.v?.replace(/[^0-9]/g, "");
+            const index = row.c[0]?.v || "";
+            const date = row.c[1]?.v || "";
+            const nickname = row.c[2]?.v || "닉네임없음";
+            const phone = row.c[3]?.v?.replace(/[^0-9]/g, "");
             if (!phone || phone.length < 8) return;
 
             const li = document.createElement("li");
-            li.innerHTML = `<a href="tel:${phone}">📞 ${name} - ${phone}</a>`;
+            li.innerHTML = `<a href="tel:${phone}">${index}. 📅 ${date} 🧑 ${nickname} 📞 ${phone}</a>`;
             list.appendChild(li);
           });
 
@@ -54,4 +56,3 @@
   </script>
 </body>
 </html>
-

@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>사랑과 평화 TM</title>
+  <style>
+    body { font-family: sans-serif; padding: 30px; background: #f7f7f7; }
+    h1 { color: #2d6cdf; }
+    ul { list-style: none; padding: 0; }
+    li { background: white; margin: 10px 0; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    a { font-size: 18px; color: #000; text-decoration: none; }
+    a:hover { color: #2d6cdf; }
+  </style>
+</head>
+<body>
+  <h1>📞 사랑과 평화 TM 리스트</h1>
+  <ul id="list">불러오는 중입니다...</ul>
+
+  <script>
+    const sheetID = "1Ozp7mUqwGTiNUdz5Et4BWA2MP_2Z-C4WgxIlZqXdjFs";
+    const sheetName = "시트1";
+    const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
+
+    fetch(url)
+      .then(res => res.text())
+      .then(data => {
+        const json = JSON.parse(data.substr(47).slice(0, -2));
+        const rows = json.table.rows;
+        const list = document.getElementById("list");
+        list.innerHTML = "";
+
+        rows.forEach(row => {
+          const name = row.c[2]?.v || "이름없음";
+          const phone = row.c[4]?.v?.replace(/[^0-9]/g, "");
+          if (!phone || phone.length < 8) return;
+
+          const li = document.createElement("li");
+          li.innerHTML = `<a href="tel:${phone}">📞 ${name} - ${phone}</a>`;
+          list.appendChild(li);
+        });
+      })
+      .catch(err => {
+        document.getElementById("list").innerHTML = "❌ 데이터를 불러오지 못했습니다.";
+        console.error("Google Sheet 불러오기 실패:", err);
+      });
+  </script>
+</body>
+</html>

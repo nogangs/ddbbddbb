@@ -1,3 +1,6 @@
+# Rebuild the updated HTML file again after environment reset
+
+updated_html_content = """
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -8,7 +11,7 @@
     h1 { color: #2d6cdf; }
     ul { list-style: none; padding: 0; }
     li { background: white; margin: 10px 0; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    a { font-size: 18px; color: #000; text-decoration: none; }
+    a { font-size: 18px; color: #000; text-decoration: none; display: block; }
     a:hover { color: #2d6cdf; }
     #error { margin-top: 20px; color: red; font-weight: bold; }
   </style>
@@ -35,12 +38,21 @@
           rows.forEach(row => {
             const index = row.c[0]?.v || "";
             const date = row.c[1]?.v || "";
-            const nickname = row.c[2]?.v || "닉네임없음";
-            const phone = row.c[3]?.v?.replace(/[^0-9]/g, "");
+            const phone = row.c[2]?.v?.replace(/[^0-9]/g, "");
+            const note = row.c[3]?.v || "";
+            const realname = row.c[13]?.v || "";
+
             if (!phone || phone.length < 8) return;
 
             const li = document.createElement("li");
-            li.innerHTML = `<a href="tel:${phone}">${index}. 📅 ${date} 🧑 ${nickname} 📞 ${phone}</a>`;
+            li.innerHTML = `
+              <a href="tel:${phone}">
+                ${index}. 📅 ${date} 
+                ${realname ? `👤 ${realname}` : ""}
+                📞 ${phone}
+                ${note ? `📝 ${note}` : ""}
+              </a>
+            `;
             list.appendChild(li);
           });
 
@@ -56,3 +68,10 @@
   </script>
 </body>
 </html>
+"""
+
+updated_file_path = "/mnt/data/index_updated.html"
+with open(updated_file_path, "w", encoding="utf-8") as f:
+    f.write(updated_html_content)
+
+updated_file_path
